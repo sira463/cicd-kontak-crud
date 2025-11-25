@@ -25,8 +25,8 @@ jobs:
     - name: 3. Install Dependensi Composer
       run: composer install --prefer-dist --no-progress
 
-    - name: 4. Setup Database MySQL (FINAL FIX)
-      # Mengatasi Error 1045 dengan -u root dan --password=""
+    - name: 4. Setup Database MySQL (Final Fix)
+      # SOLUSI: Menggunakan 'sudo mysql' tanpa parameter user/pass untuk akses root sistem.
       run: |
         # 1. Memulai layanan MySQL
         sudo /etc/init.d/mysql start
@@ -34,11 +34,11 @@ jobs:
         # 2. Menunggu 5 detik
         sleep 5 
         
-        # 3. MEMBUAT DATABASE (Perbaikan: menggunakan --password="" untuk password kosong)
-        mysql -u root --password="" -e "CREATE DATABASE IF NOT EXISTS db_kontak_sederhana;"
+        # 3. MEMBUAT DATABASE
+        sudo mysql -e "CREATE DATABASE IF NOT EXISTS db_kontak_sederhana;"
         
         # 4. MENGIMPOR SKEMA
-        mysql -u root --password="" db_kontak_sederhana < kontak.sql
+        sudo mysql db_kontak_sederhana < kontak.sql
 
     - name: 5. Jalankan Pengujian Otomatis (PHPUnit)
       run: vendor/bin/phpunit
