@@ -25,15 +25,19 @@ jobs:
     - name: 3. Install Dependensi Composer
       run: composer install --prefer-dist --no-progress
 
-    - name: 4. Setup Database MySQL (FINAL FIX)
-      # PERBAIKAN: Menggunakan 'sudo mysql' untuk mengatasi error Access Denied 1045
+    - name: 4. Setup Database MySQL (FINAL FIX with Delay)
+      # Mengatasi Error 1045 dengan 'sudo' dan waktu tunggu 'sleep 5'
       run: |
+        # 1. Memulai layanan MySQL
         sudo /etc/init.d/mysql start
         
-        # Membuat Database
+        # 2. Menunggu 5 detik agar layanan sepenuhnya siap (penting!)
+        sleep 5 
+        
+        # 3. Membuat Database
         sudo mysql -e "CREATE DATABASE IF NOT EXISTS db_kontak_sederhana;"
         
-        # Mengimpor Skema
+        # 4. Mengimpor Skema
         sudo mysql db_kontak_sederhana < kontak.sql
 
     - name: 5. Jalankan Pengujian Otomatis (PHPUnit)
