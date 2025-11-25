@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Kontak Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <const name="DB_SERVER" value="localhost"/>
+        <const name="DB_USERNAME" value="root"/>
+        <const name="DB_PASSWORD" value=""/>
+        <const name="DB_NAME" value="db_kontak_sederhana"/>
+    </php>
+</phpunit>

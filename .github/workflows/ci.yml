@@ -1,0 +1,38 @@
+name: PHP CI/CD Kontak CRUD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 1. Checkout Kode
+      uses: actions/checkout@v4
+
+    - name: 2. Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mysqli, pdo_mysql
+        tools: composer
+
+    - name: 3. Install Dependensi Composer
+      run: composer install --prefer-dist --no-progress
+
+    - name: 4. Setup Database MySQL
+      run: |
+        sudo /etc/init.d/mysql start
+        mysql -u root -e "CREATE DATABASE IF NOT EXISTS db_kontak_sederhana;"
+        mysql -u root db_kontak_sederhana < kontak.sql
+
+    - name: 5. Jalankan Pengujian Otomatis (PHPUnit)
+      run: vendor/bin/phpunit
+      
+    - name: 6. Hasil Tes
+      if: always()
+      run: echo "Pengujian selesai. Cek log di atas untuk status Passed/Failed."
